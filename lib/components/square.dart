@@ -7,6 +7,7 @@ class Square extends StatelessWidget {
   final bool isWhite;
   final ChessPiece? piece;
   final bool isSelected;
+  final bool isValidMove;
   final void Function()? onTap;
 
   const Square({
@@ -14,6 +15,7 @@ class Square extends StatelessWidget {
     required this.isWhite,
     required this.piece,
     required this.isSelected,
+    required this.isValidMove,
     required this.onTap,
   });
 
@@ -25,7 +27,11 @@ class Square extends StatelessWidget {
     // if selected square is green
     if (isSelected) {
       squareColor = Colors.green;
-    } else {
+    } else if (isValidMove) {
+      squareColor = Colors.green[300];
+    }
+
+    else {
       // otherwise, white ot black
       squareColor = isWhite ? foregroundColor : backgroundColor;
     }
