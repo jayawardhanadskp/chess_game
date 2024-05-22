@@ -41,6 +41,7 @@ class Square extends StatelessWidget {
       onTap: onTap,
       child: Container(
         color: squareColor,
+        margin: EdgeInsets.all(isValidMove ? 5 : 0),
         child: piece != null ?
         Image.asset(piece!.imagePath,
         color: piece!.isWhite ? Colors.white : Colors.black,
