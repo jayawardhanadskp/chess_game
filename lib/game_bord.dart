@@ -397,22 +397,21 @@ class _GameBoardState extends State<GameBoard> {
   }
 
   // MOVE PIECE
-  void movePiece (int newRow, int newCol) {
-
+  void movePiece(int newRow, int newCol) {
     // if the new spot has an enemy piece
     if (board[newRow][newCol] != null) {
       // add the captured piece to the appropriate list
-      var capturdePiece = board[newRow][newCol];
-      if (capturdePiece!.isWhite) {
-        whitePiecesTaken.add(capturdePiece);
-      }  else {
-        blackPiecesTaken.add(capturdePiece);
+      var capturedPiece = board[newRow][newCol];
+      if (capturedPiece!.isWhite) {
+        whitePiecesTaken.add(capturedPiece);
+      } else {
+        blackPiecesTaken.add(capturedPiece);
       }
     }
 
-    // check if the piece being moved in a king
+    // check if the piece being moved is a king
     if (selectedPiece!.type == ChessPieceType.king) {
-      // update the appropreate king pos
+      // update the appropriate king position
       if (selectedPiece!.isWhite) {
         whiteKingPosition = [newRow, newCol];
       } else {
@@ -425,9 +424,10 @@ class _GameBoardState extends State<GameBoard> {
     board[selectedRow][selectedCol] = null;
 
     // see if any kings are under attack
+    bool wasInCheck = checkStatus;
     if (isKingInCheck(!isWhitenTurn)) {
       checkStatus = true;
-    }  else {
+    } else {
       checkStatus = false;
     }
 
@@ -439,26 +439,44 @@ class _GameBoardState extends State<GameBoard> {
       validMoves = [];
     });
 
-    // check if its checkmate
+    // show "CHECK" dialog if king is in check and it wasn't in check before
+    if (checkStatus && !wasInCheck) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('CHECK MATE!'),
+          actions: [
+            // play again button
+            TextButton(
+              onPressed: resetGame,
+              child: const Text('Play Again'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // check if it's checkmate
     if (isCheckMate(!isWhitenTurn)) {
       showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('CHECK MATE!'),
-            actions: [
-              // play again button
-              TextButton(
-                  onPressed: resetGame,
-                  child: Text('Play Again'),
-              ),
-            ],
-          )
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('CHECK MATE!'),
+          actions: [
+            // play again button
+            TextButton(
+              onPressed: resetGame,
+              child: const Text('Play Again'),
+            ),
+          ],
+        ),
       );
     }
 
     // change turns
     isWhitenTurn = !isWhitenTurn;
   }
+
 
   // IS KING IN CHECK?
   bool isKingInCheck(bool isWhiteKing) {
@@ -537,10 +555,10 @@ class _GameBoardState extends State<GameBoard> {
       return false;
     }
 
-    // if there is at least one leagal move for any of the players pices , then its not checkmate
+    // if there is at least one legal move for any of the players pieces , then its not checkmate
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
-        // skip empty square and pices of the other color
+        // skip empty square and pieces of the other color
         if (board[i][j] == null || board[i][j]!.isWhite != isWhiteKing) {
           continue;
       }
@@ -575,9 +593,10 @@ class _GameBoardState extends State<GameBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.grey,
       body: Column(
         children: [
+          const SizedBox(height: 20,),
 
           //white pieces taken
           Expanded(
@@ -593,7 +612,7 @@ class _GameBoardState extends State<GameBoard> {
           ),
 
           // GAME STATUS
-          Text(checkStatus ? 'CHECK!' : '', style: TextStyle(color: Colors.black ),),
+          Text(checkStatus ? 'CHECK!' : '', style: const TextStyle(color: Colors.red, fontSize: 20 ),),
 
           // CHESS BOARD
           Expanded(
@@ -608,10 +627,10 @@ class _GameBoardState extends State<GameBoard> {
                   int row = index ~/ 8;
                   int col = index % 8;
 
-                  // check if this square is sekected
+                  // check if this square is selected
                   bool isSelected = selectedRow == row && selectedCol == col;
 
-                  // cheack if this square is valid move
+                  // check if this square is valid move
                   bool isValidMove = false;
                   for (var position in validMoves) {
                     // compare row & col
