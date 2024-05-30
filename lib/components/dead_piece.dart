@@ -15,7 +15,7 @@ class DeadPiece extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 5),
       child: Image.asset(
         imagePath,
-        color: isWhite ? Colors.grey[300] : Colors.grey[800],
+        color: isWhite ? Colors.grey[100] : Colors.grey[900],
       ),
     );
   }
