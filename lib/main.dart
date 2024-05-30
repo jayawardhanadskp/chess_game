@@ -1,3 +1,4 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'game_bord.dart';
@@ -13,7 +14,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: GameBoard(),
+      home: AnimatedSplashScreen(
+        duration: 3000,
+        splash: Image.asset('assets/Group 1.png', width: 300),
+        splashIconSize: 300,
+        nextScreen: GameBoard(),
+        splashTransition: SplashTransition.fadeTransition,
+        backgroundColor: Colors.black,
+      )
     );
   }
 }
