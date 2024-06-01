@@ -1,8 +1,6 @@
-import 'dart:math';
-
 import 'package:chess_game/components/piece.dart';
 import 'package:chess_game/components/square.dart';
-import 'package:chess_game/values/colors.dart';
+
 import 'package:flutter/material.dart';
 
 import 'components/dead_piece.dart';
