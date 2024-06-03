@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: AnimatedSplashScreen(
         duration: 3000,
-        splash: Image.asset('assets/Group 1.png', width: 300),
+        splash: Image.asset('assets/Group 1.png', width: 250),
         splashIconSize: 300,
         nextScreen: GameBoard(),
         splashTransition: SplashTransition.fadeTransition,
